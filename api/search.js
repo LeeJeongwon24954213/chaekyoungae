@@ -35,7 +35,7 @@ module.exports = async (req, res) => {
 
         const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
         const model = genAI.getGenerativeModel({ 
-            model: 'gemini-1.5-flash'
+            model: 'gemini-pro'
         });
 
         const prompt = `다음 작품 "${query}"에 대해 JSON 형식으로 정보를 제공해주세요.
