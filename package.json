@@ -2,11 +2,8 @@
   "name": "chaekyoungae",
   "version": "1.0.0",
   "description": "책과 영화 감상 순서 가이드",
-  "main": "index.html",
+  "type": "commonjs",
   "dependencies": {
-    "@google/generative-ai": "^0.1.3"
-  },
-  "engines": {
-    "node": ">=18.x"
+    "@google/generative-ai": "^0.21.0"
   }
 }
