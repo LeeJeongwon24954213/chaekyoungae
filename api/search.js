@@ -1,9 +1,7 @@
-// Vercel Serverless Function
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
 const TMDB_IMAGE_BASE = 'https://image.tmdb.org/t/p/w500';
-
 const cache = {};
 
 module.exports = async (req, res) => {
@@ -26,7 +24,6 @@ module.exports = async (req, res) => {
     }
 
     if (cache[query]) {
-        console.log('Returning cached result for:', query);
         return res.status(200).json(cache[query]);
     }
 
@@ -39,15 +36,15 @@ module.exports = async (req, res) => {
 {
   "title": "작품명 (한글)",
   "tmdbQuery": "영문 작품명 (TMDB 검색용)",
-  "tag": "책 → 영화" 또는 "영화 → 책" 또는 "애니 → 책" 등,
-  "original": "원작 정보 (예: J.R.R. 톨킨의 소설)",
-  "recommendation": "추천 순서 (예: 책부터 읽는 것을 강력 추천합니다)",
-  "reason": "추천 이유 (2-3문장, 구체적으로)",
-  "order": ["감상 순서 배열 - 각 항목은 명확하게"],
-  "tips": ["팁 배열 - 2-3개의 유용한 팁"]
+  "tag": "책 → 영화" 또는 "영화 → 책" 또는 "애니 ONLY" 등,
+  "original": "원작 정보",
+  "recommendation": "추천 순서",
+  "reason": "추천 이유 (2-3문장)",
+  "order": ["감상 순서 배열"],
+  "tips": ["팁 배열 2-3개"]
 }
 
-JSON만 응답하고 다른 텍스트는 포함하지 마세요. 마크다운 코드 블록도 사용하지 마세요.`;
+JSON만 응답하세요. 마크다운 없이.`;
 
         const result = await model.generateContent(prompt);
         const response = await result.response;
@@ -59,14 +56,12 @@ JSON만 응답하고 다른 텍스트는 포함하지 마세요. 마크다운 �
             if (jsonMatch) {
                 workData = JSON.parse(jsonMatch[0]);
             } else {
-                throw new Error('No JSON found in response');
+                throw new Error('No JSON found');
             }
         } catch (parseError) {
-            console.error('JSON Parse Error:', parseError);
             return res.status(500).json({ 
                 success: false, 
-                error: 'Failed to parse AI response',
-                rawText: text 
+                error: 'Failed to parse AI response'
             });
         }
 
@@ -105,27 +100,3 @@ JSON만 응답하고 다른 텍스트는 포함하지 마세요. 마크다운 �
         });
     }
 };
-```
-
-### Step 5: 커밋하기
-- 아래로 스크롤
-- "Commit new file" 클릭
-
-### Step 6: 기존 search.js 삭제 (만약 루트에 있다면)
-1. 루트에 있는 `search.js` 파일 클릭
-2. 쓰레기통 아이콘 (Delete) 클릭
-3. "Commit changes" 클릭
-
----
-
-## ✅ 최종 파일 구조 확인
-
-이렇게 되어야 합니다:
-```
-chaekyoungae/
-├── api/
-│   └── search.js  ✅
-├── index.html
-├── package.json
-├── vercel.json
-└── .gitignore
